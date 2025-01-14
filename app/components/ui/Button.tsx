@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/app/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 import React, { FC } from "react";
@@ -30,11 +32,23 @@ const buttonVariants = cva(
 
 interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+    VariantProps<typeof buttonVariants> {
+  ref?: React.ForwardedRef<HTMLButtonElement>;
+}
 
-const Button: FC<ButtonProps> = ({ variant, size, ...props }) => {
+const Button: FC<ButtonProps> = ({
+  ref,
+  variant,
+  size,
+  className,
+  ...props
+}) => {
   return (
-    <button className={cn(buttonVariants({ variant, size }))} {...props} />
+    <button
+      ref={ref}
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    />
   );
 };
 
