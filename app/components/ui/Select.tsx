@@ -8,31 +8,15 @@ interface SelectContextProps {
   width?: number;
 }
 
-import {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useRef,
-  useState,
-} from "react";
+import { createContext, FC, ReactNode, useRef, useState } from "react";
 import { Button } from "./Button";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/app/lib/utils";
 import { useResize } from "@/app/lib/hooks/useResize";
 import { useClickOutside } from "@/app/lib/hooks/useClickOutside";
+import { useGenericContext } from "@/app/lib/hooks/useGenericContext";
 
 const SelectContext = createContext<SelectContextProps | undefined>(undefined);
-
-const useSelectContext = () => {
-  const context = useContext(SelectContext);
-
-  if (!context) {
-    throw new Error("useSelectContext must be used within a SelectProvider");
-  }
-
-  return context;
-};
 
 interface SelectProps {
   children: ReactNode;
@@ -63,7 +47,7 @@ interface SelectTriggerProps {
 }
 
 const SelectTrigger: FC<SelectTriggerProps> = ({ placeholder }) => {
-  const { isOpen, setIsOpen, value } = useSelectContext();
+  const { isOpen, setIsOpen, value } = useGenericContext(SelectContext);
 
   return (
     <Button onClick={() => setIsOpen(!isOpen)} variant="outline">
@@ -78,7 +62,7 @@ interface SelectContentProps {
 }
 
 const SelectContent: FC<SelectContentProps> = ({ children }) => {
-  const { isOpen, setIsOpen, width } = useSelectContext();
+  const { isOpen, setIsOpen, width } = useGenericContext(SelectContext);
   const ref = useRef<HTMLDivElement>(null);
 
   useClickOutside(ref, () => setIsOpen(false));
@@ -101,7 +85,7 @@ interface SelectItemProps {
 }
 
 const SelectItem: FC<SelectItemProps> = ({ val }) => {
-  const { onValueChange, setIsOpen, value } = useSelectContext();
+  const { onValueChange, setIsOpen, value } = useGenericContext(SelectContext);
 
   return (
     <button
