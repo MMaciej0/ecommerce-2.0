@@ -50,7 +50,11 @@ const SelectTrigger: FC<SelectTriggerProps> = ({ placeholder }) => {
   const { isOpen, setIsOpen, value } = useGenericContext(SelectContext);
 
   return (
-    <Button onClick={() => setIsOpen(!isOpen)} variant="outline">
+    <Button
+      onClick={() => setIsOpen(!isOpen)}
+      variant="outline"
+      className="hover:bg-primary hover:text-primary-foreground bg-muted text-muted-foreground"
+    >
       {value || placeholder || "Select"}
       <ChevronDown className="w-4 h-4 flex-shrink-0" />
     </Button>
@@ -90,8 +94,9 @@ const SelectItem: FC<SelectItemProps> = ({ val }) => {
   return (
     <button
       className={cn(
-        "hover:bg-primary/10 py-2",
-        val === value && "bg-primary/50 hover:bg-primary/50"
+        "hover:bg-primary/60 hover:text-foreground bg-muted text-foreground py-2",
+        val === value &&
+          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground"
       )}
       onClick={() => {
         if (val === value) return;
