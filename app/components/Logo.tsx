@@ -1,11 +1,10 @@
-import Image from "next/image";
+import { Gift } from "lucide-react";
 import Link from "next/link";
-import logo from "../../public/logo.svg";
 
 const Logo = () => {
   return (
     <Link href="/" className="flex items-center">
-      <Image src={logo} alt="logo" width={40} height={40} />
+      <Gift className="flex-shrink-0 w-7 h-7" />
     </Link>
   );
 };
