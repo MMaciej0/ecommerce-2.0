@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/app/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 import React, { FC } from "react";
