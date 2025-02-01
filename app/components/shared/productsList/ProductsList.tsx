@@ -5,14 +5,17 @@ import { Badge } from "../../ui/Badge";
 
 import { getProducts } from "@/app/lib/actions/product.actions";
 import Link from "next/link";
+import { getCategories } from "@/app/lib/actions/category.actions";
 
 async function ProductList() {
   const products = await getProducts();
+  const categories = await getCategories();
+  console.log(categories);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {products.map((product) => (
-        <Link href={`/products/${product.slug}`} key={product._id}>
+        <Link href={`/products/${product.slug}`} key={product._id.toString()}>
           <Card>
             <Card.Header className="border-b">{product.name}</Card.Header>
             <Card.Content className="line-clamp-2 w-full pb-0">
