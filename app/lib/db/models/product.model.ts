@@ -40,6 +40,18 @@ const productSchema = new Schema<DBProduct>(
   { timestamps: true }
 );
 
+productSchema.index(
+  { name: "text", description: "text", tags: "text" },
+  {
+    weights: {
+      name: 10,
+      tags: 5,
+      description: 2,
+    },
+  }
+);
+productSchema.index({ category: 1 });
+
 const Product =
   (models.Product as Model<DBProduct>) ||
   model<DBProduct>("Product", productSchema);

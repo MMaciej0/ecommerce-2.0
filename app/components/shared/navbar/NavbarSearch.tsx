@@ -1,19 +1,81 @@
 "use client";
 
-import { type FC } from "react";
-import { Dialog, DialogContent } from "../../ui/Dialog";
+import { FC, useRef, useState, useTransition } from "react";
+import { Dialog, DialogContent, DialogTrigger } from "../../ui/Dialog";
 import { Search } from "lucide-react";
+import Input from "../../ui/Input";
+import { DBProduct } from "@/app/lib/db/models/product.model";
+import NavbarSearchList from "./NavbarSearchList";
 
-interface NavbarSearchProps {}
+const NavbarSearch: FC = () => {
+  const [result, setResult] = useState<DBProduct[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isError, setIsError] = useState<string | null>(null);
 
-const NavbarSearch: FC<NavbarSearchProps> = ({}) => {
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const currentSearch = e.target.value;
+    setSearchTerm(currentSearch);
+
+    if (!currentSearch || currentSearch.length < 3) {
+      setResult([]);
+      setIsError(null);
+      return;
+    }
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
+      startTransition(async () => {
+        try {
+          const res = await fetch(`/api/global-search?search=${currentSearch}`);
+
+          if (!res.ok) {
+            const errorResponse = await res.json();
+            setIsError(
+              errorResponse?.error?.message || "An unexpected error occurred."
+            );
+            setResult([]);
+            return;
+          }
+
+          const products = await res.json();
+          setResult(products);
+          setIsError(null);
+        } catch (error) {
+          console.log(error);
+          setIsError("An error occurred while fetching the products.");
+          setResult([]);
+        }
+      });
+    }, 500);
+  };
+
   return (
     <Dialog>
-      <Dialog.Trigger variant="ghost" className="bg-transparent">
+      <DialogTrigger variant="ghost" className="bg-transparent">
         <Search />
-      </Dialog.Trigger>
-      <DialogContent>
-        <h3>Search</h3>
+      </DialogTrigger>
+      <DialogContent className="md:w-3/6 lg:w-1/4 md:h-2/3">
+        <div className="flex flex-col h-full w-full">
+          <Dialog.Header>Search Gifts</Dialog.Header>
+          <Input
+            icon={<Search />}
+            placeholder="Search..."
+            className="my-4"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <NavbarSearchList
+            isLoading={isPending}
+            isError={isError}
+            products={result}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );

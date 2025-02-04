@@ -1,31 +1,40 @@
-import { Suspense } from "react";
+import Link from "next/link";
+import { ReactNode, Suspense } from "react";
 
 import { Card } from "../../ui/Card";
 import { Badge } from "../../ui/Badge";
 
 import { getProducts } from "@/app/lib/actions/product.actions";
-import Link from "next/link";
-import { getCategories } from "@/app/lib/actions/category.actions";
+import { DBProduct } from "@/app/lib/db/models/product.model";
+
+interface ProductCardProps {
+  product: DBProduct;
+  className?: string;
+  children?: ReactNode;
+}
+
+export const ProductCard = ({ product, className }: ProductCardProps) => (
+  <Link href={`/products/${product.slug}`} key={product._id.toString()}>
+    <Card>
+      <Card.Header className="border-b">{product.name}</Card.Header>
+      <Card.Content className={className}></Card.Content>
+      <Card.Footer className="text-end pt-4">
+        <Badge>${product.price}</Badge>
+      </Card.Footer>
+    </Card>
+  </Link>
+);
 
 async function ProductList() {
   const products = await getProducts();
-  const categories = await getCategories();
-  console.log(categories);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {products.map((product) => (
-        <Link href={`/products/${product.slug}`} key={product._id.toString()}>
-          <Card>
-            <Card.Header className="border-b">{product.name}</Card.Header>
-            <Card.Content className="line-clamp-2 w-full pb-0">
-              {product.description}
-            </Card.Content>
-            <Card.Footer className="text-end pt-4">
-              <Badge>${product.price}</Badge>
-            </Card.Footer>
-          </Card>
-        </Link>
+        <ProductCard
+          key={product._id.toString()}
+          product={product}
+        ></ProductCard>
       ))}
     </div>
   );

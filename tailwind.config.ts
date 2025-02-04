@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import hideScrollbar from "tailwind-scrollbar-hide";
 
 export default {
   content: [
@@ -25,5 +26,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [hideScrollbar],
 } satisfies Config;
