@@ -1,9 +1,11 @@
 "use server";
 
 import { connectToDB } from "../db";
-import Product from "../db/models/product.model";
-import Category from "../db/models/category.model";
+import Product, { DBProduct } from "../db/models/product.model";
+import Category, { DBCategory } from "../db/models/category.model";
 import mongoose from "mongoose";
+import { toDecimalUnit } from "../utils";
+import { ProductImport } from "../validators/product";
 
 interface GetProductProps {
   search?: string;
@@ -11,11 +13,15 @@ interface GetProductProps {
   sort?: "price_asc" | "price_desc" | "newest";
 }
 
+interface ProductWithCategory extends Omit<DBProduct, "category"> {
+  category: Omit<DBCategory, "products" | "createdAt" | "updatedAt">;
+}
+
 export const getProducts = async ({
   search,
   category,
   sort,
-}: GetProductProps = {}) => {
+}: GetProductProps = {}): Promise<ProductImport[]> => {
   await connectToDB();
 
   if (!mongoose.models.Category) {
@@ -34,7 +40,8 @@ export const getProducts = async ({
 
   let query = Product.find(queryParams)
     .populate("category", "name")
-    .select("-__v");
+    .select("-__v")
+    .lean();
 
   if (search) {
     query = query.select({ score: { $meta: "textScore" } });
@@ -50,7 +57,17 @@ export const getProducts = async ({
     query = query.sort({ createdAt: -1 });
   }
 
-  const products = await query.exec();
+  const products = (await query
+    .lean()
+    .exec()) as unknown as ProductWithCategory[];
 
-  return products;
+  const transformedProducts = products.map((p) => ({
+    ...p,
+    _id: p._id.toString(),
+    price: toDecimalUnit(p.price),
+    category: { _id: p.category._id.toString(), name: p.category.name },
+    reviews: p.reviews.map((r) => r.toString()),
+  }));
+
+  return transformedProducts;
 };

@@ -5,19 +5,25 @@ import { Card } from "../../ui/Card";
 import { Badge } from "../../ui/Badge";
 
 import { getProducts } from "@/app/lib/actions/product.actions";
-import { DBProduct } from "@/app/lib/db/models/product.model";
+import { ProductImport } from "@/app/lib/validators/product";
+
+import Rating from "../rating/Rating";
 
 interface ProductCardProps {
-  product: DBProduct;
+  product: ProductImport;
   className?: string;
   children?: ReactNode;
 }
 
-export const ProductCard = ({ product, className }: ProductCardProps) => (
-  <Link href={`/products/${product.slug}`} key={product._id.toString()}>
+export const ProductCard = ({
+  product,
+  className,
+  children,
+}: ProductCardProps) => (
+  <Link href={`/products/${product.slug}`} key={product._id}>
     <Card>
       <Card.Header className="border-b">{product.name}</Card.Header>
-      <Card.Content className={className}></Card.Content>
+      <Card.Content className={className}>{children}</Card.Content>
       <Card.Footer className="text-end pt-4">
         <Badge>${product.price}</Badge>
       </Card.Footer>
@@ -31,10 +37,13 @@ async function ProductList() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {products.map((product) => (
-        <ProductCard
-          key={product._id.toString()}
-          product={product}
-        ></ProductCard>
+        <ProductCard key={product._id} product={product}>
+          <div className="flex items-center space-x-1 text-lg">
+            <span>Rating:</span>
+            <Rating rating={product.avgRating} />{" "}
+            <span className="text-sm">{product.avgRating} / 5</span>
+          </div>
+        </ProductCard>
       ))}
     </div>
   );

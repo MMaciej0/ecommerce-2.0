@@ -10,10 +10,10 @@ export const productsToSeed: ProductInput[] = [
     isPublished: true,
     countInStock: 50,
     tags: ["surprise", "gift", "mystery"],
-    avgRaring: 4.7,
+    avgRating: 4.7,
     numReviews: 120,
     reviews: [],
-    numSeles: 200,
+    numSales: 200,
     price: 2999, // Price stored as integer (in cents, so $29.99)
   },
   {
@@ -25,10 +25,10 @@ export const productsToSeed: ProductInput[] = [
     isPublished: true,
     countInStock: 30,
     tags: ["chocolate", "gourmet", "sweet", "mystery"],
-    avgRaring: 4.9,
+    avgRating: 2.9,
     numReviews: 85,
     reviews: [],
-    numSeles: 150,
+    numSales: 150,
     price: 4999, // Price stored as integer (in cents, so $49.99)
   },
   {
@@ -40,10 +40,10 @@ export const productsToSeed: ProductInput[] = [
     isPublished: true,
     countInStock: 40,
     tags: ["jewelry", "gift", "mystery", "luxury"],
-    avgRaring: 4.5,
+    avgRating: 3.5,
     numReviews: 60,
     reviews: [],
-    numSeles: 120,
+    numSales: 120,
     price: 7999, // Price stored as integer (in cents, so $79.99)
   },
   {
@@ -55,10 +55,10 @@ export const productsToSeed: ProductInput[] = [
     isPublished: true,
     countInStock: 25,
     tags: ["outdoor", "adventure", "mystery"],
-    avgRaring: 4.6,
+    avgRating: 4.6,
     numReviews: 70,
     reviews: [],
-    numSeles: 90,
+    numSales: 90,
     price: 5999, // Price stored as integer (in cents, so $59.99)
   },
   {
@@ -70,10 +70,10 @@ export const productsToSeed: ProductInput[] = [
     isPublished: true,
     countInStock: 60,
     tags: ["tech", "gadgets", "mystery"],
-    avgRaring: 4.8,
+    avgRating: 1.0,
     numReviews: 150,
     reviews: [],
-    numSeles: 250,
+    numSales: 250,
     price: 9999, // Price stored as integer (in cents, so $99.99)
   },
   {
@@ -85,10 +85,10 @@ export const productsToSeed: ProductInput[] = [
     isPublished: true,
     countInStock: 35,
     tags: ["spa", "wellness", "luxury", "mystery"],
-    avgRaring: 4.7,
+    avgRating: 1.7,
     numReviews: 55,
     reviews: [],
-    numSeles: 110,
+    numSales: 110,
     price: 6999, // Price stored as integer (in cents, so $69.99)
   },
   {
@@ -100,10 +100,10 @@ export const productsToSeed: ProductInput[] = [
     isPublished: true,
     countInStock: 75,
     tags: ["kids", "toys", "mystery"],
-    avgRaring: 4.4,
+    avgRating: 3.4,
     numReviews: 110,
     reviews: [],
-    numSeles: 180,
+    numSales: 180,
     price: 2499, // Price stored as integer (in cents, so $24.99)
   },
   {
@@ -115,10 +115,10 @@ export const productsToSeed: ProductInput[] = [
     isPublished: true,
     countInStock: 45,
     tags: ["candles", "luxury", "home", "mystery"],
-    avgRaring: 4.6,
+    avgRating: 4.6,
     numReviews: 95,
     reviews: [],
-    numSeles: 140,
+    numSales: 140,
     price: 3999, // Price stored as integer (in cents, so $39.99)
   },
   {
@@ -130,10 +130,10 @@ export const productsToSeed: ProductInput[] = [
     isPublished: true,
     countInStock: 20,
     tags: ["vintage", "collectibles", "mystery"],
-    avgRaring: 4.8,
+    avgRating: 4.4,
     numReviews: 50,
     reviews: [],
-    numSeles: 80,
+    numSales: 80,
     price: 14999, // Price stored as integer (in cents, so $149.99)
   },
   {
@@ -145,10 +145,10 @@ export const productsToSeed: ProductInput[] = [
     isPublished: true,
     countInStock: 25,
     tags: ["personalized", "custom", "gift", "mystery"],
-    avgRaring: 4.9,
+    avgRating: 5.0,
     numReviews: 120,
     reviews: [],
-    numSeles: 210,
+    numSales: 210,
     price: 7999, // Price stored as integer (in cents, so $79.99)
   },
 ];

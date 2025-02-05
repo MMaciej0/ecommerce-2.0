@@ -1,6 +1,6 @@
 import { model, Model, models, Schema, Types, Document } from "mongoose";
 
-interface DBCategory extends Document {
+export interface DBCategory extends Document {
   _id: Types.ObjectId;
   name: string;
   products: Types.ObjectId[];

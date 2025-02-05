@@ -4,6 +4,7 @@ import { connectToDB } from ".";
 import Product from "./models/product.model";
 import { productsToSeed } from "./data";
 import Category from "./models/category.model";
+import { Types } from "mongoose";
 
 loadEnvConfig(cwd());
 
@@ -28,13 +29,15 @@ const seed = async () => {
 
     console.log(`Seeded ${categories.length} categories.`);
 
-    const categoryMap = new Map<string, string>();
+    const categoryMap = new Map<string, Types.ObjectId>();
     categories.forEach((category) =>
       categoryMap.set(category.name, category._id)
     );
 
     const updatedProducts = productsToSeed.map((product) => {
-      product.category = categoryMap.get(product.category)!;
+      product.category = categoryMap.get(
+        product.category
+      )! as unknown as string;
       return product;
     });
 

@@ -5,7 +5,7 @@ export interface DBProduct extends Document {
   name: string;
   slug: string;
   category: Types.ObjectId;
-  description?: string;
+  description: string;
   isPublished: boolean;
   countInStock: number;
   tags: string[];
@@ -27,7 +27,7 @@ const productSchema = new Schema<DBProduct>(
       ref: "Category",
       required: true,
     },
-    description: { type: String, trim: true },
+    description: { type: String, trim: true, required: true },
     isPublished: { type: Boolean, default: false },
     countInStock: { type: Number, required: true, default: 0 },
     tags: { type: [String], default: ["new"] },
