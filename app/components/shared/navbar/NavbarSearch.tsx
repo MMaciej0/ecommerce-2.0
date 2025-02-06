@@ -8,6 +8,7 @@ import NavbarSearchList from "./NavbarSearchList";
 import { ProductImport } from "@/app/lib/validators/product";
 
 const NavbarSearch: FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [result, setResult] = useState<ProductImport[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isError, setIsError] = useState<string | null>(null);
@@ -56,7 +57,7 @@ const NavbarSearch: FC = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} setOpen={setIsOpen}>
       <DialogTrigger variant="ghost" className="bg-transparent">
         <Search />
       </DialogTrigger>
@@ -74,6 +75,7 @@ const NavbarSearch: FC = () => {
             isLoading={isPending}
             isError={isError}
             products={result}
+            setOpen={setIsOpen}
           />
         </div>
       </DialogContent>

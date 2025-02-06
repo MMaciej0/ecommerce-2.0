@@ -16,23 +16,38 @@ interface ProductCardProps {
   children?: ReactNode;
 }
 
-export const ProductCard = ({
-  product,
-  className,
-  children,
-}: ProductCardProps) => {
+export const ProductCard = ({ product, className }: ProductCardProps) => {
   const dayDiff = calculateDayDifference(product.createdAt!, new Date());
   return (
-    <Link href={`/products/${product.slug}`} key={product._id}>
-      <Card className="flex h-full flex-col">
-        <Card.Header className="border-b">{product.name}</Card.Header>
-        <Card.Content className={className}>{children}</Card.Content>
-        <Card.Footer className="flex h-full items-end justify-between pt-4">
-          {dayDiff < 30 && <Badge className="bg-lime-600">NEW</Badge>}
-          <Badge>${product.price}</Badge>
-        </Card.Footer>
-      </Card>
-    </Link>
+    <Card className="flex h-full flex-col">
+      <Card.Header className="border-b">{product.name}</Card.Header>
+      <Card.Content className={className}>
+        <ul className="space-y-2 text-lg">
+          <li className="flex items-center space-x-1">
+            <span>Category:</span>
+            <span>{product.category.name}</span>
+          </li>
+          <li className="flex items-center space-x-1">
+            <span>Rating:</span>
+            <Rating rating={product.avgRating} />
+          </li>
+          <li className="flex items-center space-x-1">
+            <span>Availability:</span>
+            <span>
+              {product.countInStock > 100
+                ? "Good"
+                : product.countInStock > 30
+                  ? "Average"
+                  : "Last pieces"}
+            </span>
+          </li>
+        </ul>
+      </Card.Content>
+      <Card.Footer className="flex h-full items-end justify-between pt-4">
+        {dayDiff < 30 && <Badge className="bg-lime-600">NEW</Badge>}
+        <Badge>${product.price}</Badge>
+      </Card.Footer>
+    </Card>
   );
 };
 
@@ -42,28 +57,9 @@ async function ProductList() {
   return (
     <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-3">
       {products.map((product) => (
-        <ProductCard key={product._id} product={product}>
-          <ul className="space-y-2 text-lg">
-            <li className="flex items-center space-x-1">
-              <span>Category:</span>
-              <span>{product.category.name}</span>
-            </li>
-            <li className="flex items-center space-x-1">
-              <span>Rating:</span>
-              <Rating rating={product.avgRating} />
-            </li>
-            <li className="flex items-center space-x-1">
-              <span>Availability:</span>
-              <span>
-                {product.countInStock > 100
-                  ? "Good"
-                  : product.countInStock > 30
-                    ? "Average"
-                    : "Last pieces"}
-              </span>
-            </li>
-          </ul>
-        </ProductCard>
+        <Link href={`/products/${product.slug}`} key={product._id}>
+          <ProductCard product={product} />
+        </Link>
       ))}
     </div>
   );
