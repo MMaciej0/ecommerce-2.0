@@ -12,7 +12,7 @@ const MaxWidthContainer: FC<MaxWidthContainerProps> = ({
   return (
     <div
       {...props}
-      className={cn("max-w-5xl mx-auto w-full px-4 lg:px-0", className)}
+      className={cn("max-w-5xl mx-auto w-full px-4 lg:px-0 py-8", className)}
     />
   );
 };

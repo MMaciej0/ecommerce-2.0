@@ -4,11 +4,11 @@ import { FC, useRef, useState, useTransition } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "../../ui/Dialog";
 import { Search } from "lucide-react";
 import Input from "../../ui/Input";
-import { DBProduct } from "@/app/lib/db/models/product.model";
 import NavbarSearchList from "./NavbarSearchList";
+import { ProductImport } from "@/app/lib/validators/product";
 
 const NavbarSearch: FC = () => {
-  const [result, setResult] = useState<DBProduct[]>([]);
+  const [result, setResult] = useState<ProductImport[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isError, setIsError] = useState<string | null>(null);
 
@@ -37,7 +37,7 @@ const NavbarSearch: FC = () => {
           if (!res.ok) {
             const errorResponse = await res.json();
             setIsError(
-              errorResponse?.error?.message || "An unexpected error occurred."
+              errorResponse?.error?.message || "An unexpected error occurred.",
             );
             setResult([]);
             return;
@@ -60,8 +60,8 @@ const NavbarSearch: FC = () => {
       <DialogTrigger variant="ghost" className="bg-transparent">
         <Search />
       </DialogTrigger>
-      <DialogContent className="md:w-3/6 lg:w-1/4 md:h-2/3">
-        <div className="flex flex-col h-full w-full">
+      <DialogContent className="md:h-2/3 md:w-3/6 lg:w-1/4">
+        <div className="flex h-full w-full flex-col">
           <Dialog.Header>Search Gifts</Dialog.Header>
           <Input
             icon={<Search />}

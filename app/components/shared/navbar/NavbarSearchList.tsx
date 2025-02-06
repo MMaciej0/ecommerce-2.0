@@ -1,12 +1,12 @@
-import { DBProduct } from "@/app/lib/db/models/product.model";
 import { type FC } from "react";
 import DefaultLoader from "../../DefaultLoader";
 import { ProductCard } from "../productsList/ProductsList";
+import { ProductImport } from "@/app/lib/validators/product";
 
 interface NavbarSearchListProps {
   isLoading: boolean;
   isError: string | null;
-  products: DBProduct[];
+  products: ProductImport[];
 }
 
 const NavbarSearchList: FC<NavbarSearchListProps> = ({
@@ -26,7 +26,7 @@ const NavbarSearchList: FC<NavbarSearchListProps> = ({
   return (
     <ul className="flex-1 overflow-y-auto p-4">
       {products.map((product) => (
-        <li key={product._id.toString()} className="my-2">
+        <li key={product._id} className="my-2">
           <ProductCard product={product} />
         </li>
       ))}

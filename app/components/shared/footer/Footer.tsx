@@ -3,7 +3,7 @@ import MaxWidthContainer from "../../MaxWidthContainer";
 
 const Footer = () => {
   return (
-    <footer className="bg-muted py-10 mt-10">
+    <footer className="mt-10 bg-muted py-4">
       <MaxWidthContainer>
         <p className="text-center text-muted-foreground">
           © 2025 Mystery Market

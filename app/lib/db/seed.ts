@@ -18,7 +18,7 @@ const seed = async () => {
       { name: "Mystery Gifts" },
       { name: "Edible Gifts" },
       { name: "Jewelry" },
-      { name: "Outdoor & Adventure" },
+      { name: "Outdoor" },
       { name: "Tech Gifts" },
       { name: "Beauty & Wellness" },
       { name: "Toys & Games" },
@@ -35,9 +35,11 @@ const seed = async () => {
     );
 
     const updatedProducts = productsToSeed.map((product) => {
-      product.category = categoryMap.get(
-        product.category
-      )! as unknown as string;
+      const categoryId = categoryMap.get(product.category);
+      if (!categoryId) {
+        throw new Error(`Category "${product.category}" not found`);
+      }
+      product.category = categoryId as unknown as string;
       return product;
     });
 

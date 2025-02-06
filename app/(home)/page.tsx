@@ -4,7 +4,7 @@ import ProductsList from "../components/shared/productsList/ProductsList";
 
 export default function Home() {
   return (
-    <MaxWidthContainer className="py-8">
+    <MaxWidthContainer>
       <Hero />
       <div className="pt-10">
         <ProductsList />

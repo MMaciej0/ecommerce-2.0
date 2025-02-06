@@ -49,7 +49,7 @@ export const productsToSeed: ProductInput[] = [
   {
     name: "The Adventure Kit",
     slug: "adventure-kit",
-    category: "Outdoor & Adventure",
+    category: "Outdoor",
     description:
       "An exciting gift box for the adventurous soul, containing gear and surprises for your next outdoor expedition.",
     isPublished: true,

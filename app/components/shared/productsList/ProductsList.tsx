@@ -8,6 +8,7 @@ import { getProducts } from "@/app/lib/actions/product.actions";
 import { ProductImport } from "@/app/lib/validators/product";
 
 import Rating from "../rating/Rating";
+import { calculateDayDifference } from "@/app/lib/utils";
 
 interface ProductCardProps {
   product: ProductImport;
@@ -19,30 +20,49 @@ export const ProductCard = ({
   product,
   className,
   children,
-}: ProductCardProps) => (
-  <Link href={`/products/${product.slug}`} key={product._id}>
-    <Card>
-      <Card.Header className="border-b">{product.name}</Card.Header>
-      <Card.Content className={className}>{children}</Card.Content>
-      <Card.Footer className="text-end pt-4">
-        <Badge>${product.price}</Badge>
-      </Card.Footer>
-    </Card>
-  </Link>
-);
+}: ProductCardProps) => {
+  const dayDiff = calculateDayDifference(product.createdAt!, new Date());
+  return (
+    <Link href={`/products/${product.slug}`} key={product._id}>
+      <Card className="flex h-full flex-col">
+        <Card.Header className="border-b">{product.name}</Card.Header>
+        <Card.Content className={className}>{children}</Card.Content>
+        <Card.Footer className="flex h-full items-end justify-between pt-4">
+          {dayDiff < 30 && <Badge className="bg-lime-600">NEW</Badge>}
+          <Badge>${product.price}</Badge>
+        </Card.Footer>
+      </Card>
+    </Link>
+  );
+};
 
 async function ProductList() {
   const products = await getProducts();
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-3">
       {products.map((product) => (
         <ProductCard key={product._id} product={product}>
-          <div className="flex items-center space-x-1 text-lg">
-            <span>Rating:</span>
-            <Rating rating={product.avgRating} />{" "}
-            <span className="text-sm">{product.avgRating} / 5</span>
-          </div>
+          <ul className="space-y-2 text-lg">
+            <li className="flex items-center space-x-1">
+              <span>Category:</span>
+              <span>{product.category.name}</span>
+            </li>
+            <li className="flex items-center space-x-1">
+              <span>Rating:</span>
+              <Rating rating={product.avgRating} />
+            </li>
+            <li className="flex items-center space-x-1">
+              <span>Availability:</span>
+              <span>
+                {product.countInStock > 100
+                  ? "Good"
+                  : product.countInStock > 30
+                    ? "Average"
+                    : "Last pieces"}
+              </span>
+            </li>
+          </ul>
         </ProductCard>
       ))}
     </div>
@@ -61,10 +81,10 @@ function LoadingSkeleton() {
   return (
     <div className="grid grid-cols-3 gap-4">
       {Array.from({ length: 12 }).map((_, i) => (
-        <div className="border rounded-lg p-4 shadow-md animate-pulse" key={i}>
-          <div className="h-6 bg-gray-300 rounded w-3/4 mb-2"></div>
-          <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
-          <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+        <div className="animate-pulse rounded-lg border p-4 shadow-md" key={i}>
+          <div className="mb-2 h-6 w-3/4 rounded bg-gray-300"></div>
+          <div className="mb-2 h-4 w-full rounded bg-gray-300"></div>
+          <div className="h-4 w-1/2 rounded bg-gray-300"></div>
         </div>
       ))}
     </div>
