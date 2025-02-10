@@ -31,11 +31,13 @@ const Select = ({ children, value, onValueChange }: SelectProps) => {
 
   useResize(containerRef, setWidth);
 
+  useClickOutside(containerRef, () => setIsOpen(false));
+
   return (
     <SelectContext.Provider
       value={{ isOpen, setIsOpen, value, onValueChange, width }}
     >
-      <div className="relative" ref={containerRef}>
+      <div className="relative w-full" ref={containerRef}>
         {children}
       </div>
     </SelectContext.Provider>
@@ -51,12 +53,16 @@ const SelectTrigger: FC<SelectTriggerProps> = ({ placeholder }) => {
 
   return (
     <Button
+      onMouseDown={(e) => e.preventDefault()}
       onClick={() => setIsOpen(!isOpen)}
       variant="outline"
-      className="hover:bg-primary hover:text-primary-foreground bg-muted text-muted-foreground"
+      className={cn(
+        "w-full bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground",
+        value && "text-foreground",
+      )}
     >
       {value || placeholder || "Select"}
-      <ChevronDown className="w-4 h-4 flex-shrink-0" />
+      <ChevronDown className="h-4 w-4 flex-shrink-0" />
     </Button>
   );
 };
@@ -66,16 +72,13 @@ interface SelectContentProps {
 }
 
 const SelectContent: FC<SelectContentProps> = ({ children }) => {
-  const { isOpen, setIsOpen, width } = useGenericContext(SelectContext);
-  const ref = useRef<HTMLDivElement>(null);
+  const { isOpen, width } = useGenericContext(SelectContext);
 
-  useClickOutside(ref, () => setIsOpen(false));
   return (
     <div
-      ref={ref}
       className={cn(
-        "absolute top-11 z-50 bg-background border border-border shadow-md rounded-md overflow-hidden focus:outline-none flex flex-col",
-        !isOpen && "hidden"
+        "absolute top-11 z-50 flex flex-col overflow-hidden rounded-md border border-border bg-background shadow-md focus:outline-none",
+        !isOpen && "hidden",
       )}
       style={{ width: `${width}px` }}
     >
@@ -94,9 +97,9 @@ const SelectItem: FC<SelectItemProps> = ({ val }) => {
   return (
     <button
       className={cn(
-        "hover:bg-primary/60 hover:text-foreground bg-muted text-foreground py-2",
+        "bg-muted py-2 text-foreground hover:bg-primary/30 hover:text-foreground",
         val === value &&
-          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground"
+          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
       )}
       onClick={() => {
         if (val === value) return;

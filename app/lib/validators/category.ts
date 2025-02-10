@@ -2,7 +2,7 @@ import { z } from "zod";
 import { RequiredString } from "./base";
 
 export const categorySchema = z.object({
-  id: RequiredString,
+  _id: RequiredString,
   name: RequiredString,
 });
 

@@ -6,7 +6,12 @@ import Category from "../db/models/category.model";
 export const getCategories = async () => {
   await connectToDB();
 
-  const categories = await Category.find({});
+  const categories = await Category.find({}).select("-__v").lean();
 
-  return categories;
+  const formattedCategopries = categories.map((category) => ({
+    _id: category._id.toString(),
+    name: category.name,
+  }));
+
+  return formattedCategopries;
 };

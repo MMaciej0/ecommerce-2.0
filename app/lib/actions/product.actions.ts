@@ -7,21 +7,21 @@ import mongoose from "mongoose";
 import { toDecimalUnit } from "../utils";
 import { ProductImport } from "../validators/product";
 
-interface GetProductProps {
-  search?: string;
-  category?: string;
-  sort?: "price_asc" | "price_desc" | "newest";
-}
-
 interface ProductWithCategory extends Omit<DBProduct, "category"> {
   category: Omit<DBCategory, "products" | "createdAt" | "updatedAt">;
 }
 
+export interface GetProductsProps {
+  search?: string;
+  categoryId?: string;
+  sort?: string;
+}
+
 export const getProducts = async ({
   search,
-  category,
+  categoryId,
   sort,
-}: GetProductProps = {}): Promise<ProductImport[]> => {
+}: GetProductsProps = {}): Promise<ProductImport[]> => {
   await connectToDB();
 
   if (!mongoose.models.Category) {
@@ -34,8 +34,8 @@ export const getProducts = async ({
     queryParams.$text = { $search: search };
   }
 
-  if (category) {
-    queryParams.category = category;
+  if (categoryId) {
+    queryParams.category = categoryId;
   }
 
   let query = Product.find(queryParams)
@@ -49,11 +49,13 @@ export const getProducts = async ({
 
   if (search) {
     query = query.sort({ score: { $meta: "textScore" } });
-  } else if (sort === "price_asc") {
+  } else if (sort === "Lowest Price") {
     query = query.sort({ price: 1 });
-  } else if (sort === "price_desc") {
+  } else if (sort === "Highest Price") {
     query = query.sort({ price: -1 });
-  } else {
+  } else if (sort === "Top rated") {
+    query = query.sort({ avgRating: -1 });
+  } else if (sort === "Newest") {
     query = query.sort({ createdAt: -1 });
   }
 

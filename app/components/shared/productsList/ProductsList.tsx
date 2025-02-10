@@ -4,11 +4,18 @@ import { ReactNode, Suspense } from "react";
 import { Card } from "../../ui/Card";
 import { Badge } from "../../ui/Badge";
 
-import { getProducts } from "@/app/lib/actions/product.actions";
+import {
+  getProducts,
+  GetProductsProps,
+} from "@/app/lib/actions/product.actions";
 import { ProductImport } from "@/app/lib/validators/product";
 
 import Rating from "../rating/Rating";
 import { calculateDayDifference } from "@/app/lib/utils";
+
+interface ProductListProps {
+  searchParams?: GetProductsProps;
+}
 
 interface ProductCardProps {
   product: ProductImport;
@@ -51,8 +58,8 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
   );
 };
 
-async function ProductList() {
-  const products = await getProducts();
+async function ProductList({ searchParams }: ProductListProps) {
+  const products = await getProducts(searchParams);
 
   return (
     <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-3">
@@ -65,10 +72,10 @@ async function ProductList() {
   );
 }
 
-export default function ProductListWrapper() {
+export default function ProductListWrapper({ searchParams }: ProductListProps) {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <ProductList />
+      <ProductList searchParams={searchParams} />
     </Suspense>
   );
 }
