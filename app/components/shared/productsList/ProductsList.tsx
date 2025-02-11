@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ReactNode, Suspense } from "react";
 
 import { Card } from "../../ui/Card";
@@ -11,7 +10,7 @@ import {
 import { ProductImport } from "@/app/lib/validators/product";
 
 import Rating from "../rating/Rating";
-import { calculateDayDifference } from "@/app/lib/utils";
+import ProductsWithGlow from "./ProductsWithGlow";
 
 interface ProductListProps {
   searchParams?: GetProductsProps;
@@ -24,9 +23,8 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, className }: ProductCardProps) => {
-  const dayDiff = calculateDayDifference(product.createdAt!, new Date());
   return (
-    <Card className="flex h-full flex-col">
+    <Card className="flex h-full flex-col border-accent/50">
       <Card.Header className="border-b">{product.name}</Card.Header>
       <Card.Content className={className}>
         <ul className="space-y-2 text-lg">
@@ -50,9 +48,13 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
           </li>
         </ul>
       </Card.Content>
-      <Card.Footer className="flex h-full items-end justify-between pt-4">
-        {dayDiff < 30 && <Badge className="bg-lime-600">NEW</Badge>}
-        <Badge>${product.price}</Badge>
+      <Card.Footer className="pt-2">
+        <Badge
+          variant="outline"
+          className="block py-2 text-center text-base font-semibold"
+        >
+          ${product.price}
+        </Badge>
       </Card.Footer>
     </Card>
   );
@@ -61,15 +63,7 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
 async function ProductList({ searchParams }: ProductListProps) {
   const products = await getProducts(searchParams);
 
-  return (
-    <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-3">
-      {products.map((product) => (
-        <Link href={`/products/${product.slug}`} key={product._id}>
-          <ProductCard product={product} />
-        </Link>
-      ))}
-    </div>
-  );
+  return <ProductsWithGlow products={products} />;
 }
 
 export default function ProductListWrapper({ searchParams }: ProductListProps) {

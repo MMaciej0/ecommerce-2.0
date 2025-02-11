@@ -57,7 +57,7 @@ const SelectTrigger: FC<SelectTriggerProps> = ({ placeholder }) => {
       onClick={() => setIsOpen(!isOpen)}
       variant="outline"
       className={cn(
-        "w-full bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground",
+        "w-full bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground",
         value && "text-foreground",
       )}
     >
@@ -97,9 +97,9 @@ const SelectItem: FC<SelectItemProps> = ({ val }) => {
   return (
     <button
       className={cn(
-        "bg-muted py-2 text-foreground hover:bg-primary/30 hover:text-foreground",
+        "bg-muted py-2 text-foreground hover:bg-accent/30 hover:text-foreground",
         val === value &&
-          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
+          "bg-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground",
       )}
       onClick={() => {
         if (val === value) return;

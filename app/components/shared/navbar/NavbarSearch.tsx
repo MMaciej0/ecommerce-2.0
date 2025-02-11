@@ -58,7 +58,7 @@ const NavbarSearch: FC = () => {
 
   return (
     <Dialog open={isOpen} setOpen={setIsOpen}>
-      <DialogTrigger variant="ghost" className="bg-transparent">
+      <DialogTrigger variant="ghost" className="rounded-full">
         <Search />
       </DialogTrigger>
       <DialogContent className="md:h-2/3 md:w-3/6 lg:w-1/4">

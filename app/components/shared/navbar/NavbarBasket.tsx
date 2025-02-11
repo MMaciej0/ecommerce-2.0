@@ -2,22 +2,19 @@
 
 import { cn } from "@/app/lib/utils";
 import Link from "next/link";
-import { type FC } from "react";
 import { buttonVariants } from "../../ui/Button";
 import { ShoppingBasket } from "lucide-react";
 
-interface NavbarBasketProps {}
-
-const NavbarBasket: FC<NavbarBasketProps> = ({}) => {
+const NavbarBasket = ({}) => {
   return (
     <Link
       href="/basket"
       className={cn(
         buttonVariants({ variant: "ghost" }),
-        "flex-col gap-0 bg-transparent"
+        "flex-col gap-0 rounded-full",
       )}
     >
-      <ShoppingBasket className="flex-shrink-0 w-5 h-5" />
+      <ShoppingBasket className="h-5 w-5 flex-shrink-0" />
       <span>0 items</span>
     </Link>
   );

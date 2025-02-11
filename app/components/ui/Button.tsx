@@ -15,7 +15,9 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost:
-          "hover:bg-primary hover:text-primary-foreground bg-muted text-muted-foreground",
+          "hover:bg-accent hover:text-accent-foreground bg-muted text-muted-foreground",
+        disco:
+          "bg-background text-foreground relative border border-border disco",
         link: "underline offset-2",
       },
       size: {
@@ -27,7 +29,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 interface ButtonProps
