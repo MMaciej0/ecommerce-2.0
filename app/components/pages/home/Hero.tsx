@@ -7,8 +7,8 @@ import { Gift } from "lucide-react";
 const Hero = ({}) => {
   return (
     <header className="grid grid-cols-1 rounded-xl bg-accent/20 p-8 md:grid-cols-2 md:p-12">
-      <div className="space-y-8 text-center md:text-left lg:py-4">
-        <h1 className="text-4xl font-extrabold md:text-5xl">Mystery Market</h1>
+      <div className="flex flex-col justify-center space-y-8 text-center md:text-left lg:py-4">
+        <h1 className="text-4xl font-extrabold md:text-5xl">Beauty Gifts</h1>
         <p className="text-lg leading-tight text-muted-foreground xl:pb-8">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laborum
@@ -18,7 +18,7 @@ const Hero = ({}) => {
           href="/products"
           className={cn(
             buttonVariants({ variant: "disco" }),
-            "rounded-full px-12 py-6 text-lg xl:ml-6 xl:px-16 xl:py-7 xl:font-semibold xl:tracking-wide",
+            "rounded-full px-12 py-6 text-lg xl:px-16 xl:py-7 xl:font-semibold xl:tracking-wide",
           )}
         >
           Make a gift!

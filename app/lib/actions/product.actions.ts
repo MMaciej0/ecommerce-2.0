@@ -73,3 +73,31 @@ export const getProducts = async ({
 
   return transformedProducts;
 };
+
+export const getProduct = async (
+  slug: string,
+): Promise<ProductImport | null> => {
+  await connectToDB();
+
+  const product = (await Product.findOne({ slug })
+    .populate("category", "name")
+    .select("-__v")
+    .lean()) as unknown as ProductWithCategory;
+
+  if (!product) {
+    return null;
+  }
+
+  const transformedProduct = {
+    ...product,
+    _id: product._id.toString(),
+    price: toDecimalUnit(product.price),
+    category: {
+      _id: product.category._id.toString(),
+      name: product.category.name,
+    },
+    reviews: product.reviews.map((r) => r.toString()),
+  };
+
+  return transformedProduct;
+};

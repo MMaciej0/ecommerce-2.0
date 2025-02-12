@@ -10,7 +10,7 @@ import React from "react";
 const ProductsPage = async ({
   searchParams,
 }: {
-  searchParams: ProductSearchParams;
+  searchParams: Promise<ProductSearchParams>;
 }) => {
   const currentSearchParams = await searchParams;
   const categories = await getCategories();
@@ -19,7 +19,7 @@ const ProductsPage = async ({
     productSearchParamsSchema.safeParse(currentSearchParams);
 
   if (!validatedSearchParams.success) {
-    throw new Error("Invalid search parameters");
+    throw new Error("Invalid search parameters.");
   }
 
   if (validatedSearchParams.data.category) {
@@ -30,7 +30,7 @@ const ProductsPage = async ({
     )?._id;
 
     if (!categoryId) {
-      throw new Error("Category not found");
+      throw new Error("Category not found.");
     }
 
     validatedSearchParams.data.category = categoryId;
