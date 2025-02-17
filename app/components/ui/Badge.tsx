@@ -1,4 +1,4 @@
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/app/lib/utils/utils";
 import { cva, VariantProps } from "class-variance-authority";
 
 const badgeVariants = cva(
@@ -15,7 +15,7 @@ const badgeVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 interface BadgeProps

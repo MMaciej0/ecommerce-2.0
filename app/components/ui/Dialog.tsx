@@ -11,7 +11,7 @@ import React, {
 } from "react";
 import { Button, buttonVariants } from "./Button";
 import { VariantProps } from "class-variance-authority";
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/app/lib/utils/utils";
 import { useGenericContext } from "@/app/lib/hooks/useGenericContext";
 import { X } from "lucide-react";
 import { useClickOutside } from "@/app/lib/hooks/useClickOutside";
@@ -101,8 +101,8 @@ export const DialogContent: FC<DialogContentProps> = ({
           <div
             ref={dialogContentRef}
             className={cn(
-              "z-50 absolute top-0 left-0 w-full h-full md:top-1/2 md:-translate-y-1/2 md:left-1/2 md:-translate-x-1/2 md:w-auto md:h-auto md:min-w-[300px] md:max-w-[600px] p-2 border border-border bg-background shadow-lg rounded-md",
-              className
+              "absolute left-0 top-0 z-50 h-full w-full rounded-md border border-border bg-background p-2 shadow-lg md:left-1/2 md:top-1/2 md:h-auto md:w-auto md:min-w-[300px] md:max-w-[600px] md:-translate-x-1/2 md:-translate-y-1/2",
+              className,
             )}
           >
             <div className="relative w-full">
@@ -110,9 +110,9 @@ export const DialogContent: FC<DialogContentProps> = ({
                 size="sm"
                 variant="ghost"
                 onClick={() => setOpen(false)}
-                className="absolute top-2 right-2"
+                className="absolute right-2 top-2"
               >
-                <X className="w-4 h-4 flex-shrink-0" />
+                <X className="h-4 w-4 flex-shrink-0" />
               </Button>
             </div>
             <div className="h-full w-full">{children}</div>
@@ -132,8 +132,8 @@ const DialogHeader: FC<DialogHeaderProps> = ({ center, children }) => {
   return (
     <h3
       className={cn(
-        "p-3 text-lg border-b font-medium",
-        center && "text-center"
+        "border-b p-3 text-lg font-medium",
+        center && "text-center",
       )}
     >
       {children}

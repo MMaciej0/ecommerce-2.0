@@ -1,6 +1,6 @@
 import z from "zod";
 import { DBBaseSchema, RequiredString } from "./base";
-import { toSmallestUnit } from "../utils";
+import { toSmallestUnit } from "../utils/utils";
 
 export const ProductSchema = z.object({
   name: RequiredString.max(50, "Name must be less than 50 characters."),
@@ -17,7 +17,6 @@ export const ProductSchema = z.object({
     .number()
     .int()
     .nonnegative("Number of reviews must be a positive number."),
-  reviews: z.array(z.string()).default([]),
   numSales: z.coerce
     .number()
     .int()

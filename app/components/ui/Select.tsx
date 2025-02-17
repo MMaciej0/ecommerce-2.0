@@ -11,7 +11,7 @@ interface SelectContextProps {
 import { createContext, FC, ReactNode, useRef, useState } from "react";
 import { Button } from "./Button";
 import { ChevronDown } from "lucide-react";
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/app/lib/utils/utils";
 import { useResize } from "@/app/lib/hooks/useResize";
 import { useClickOutside } from "@/app/lib/hooks/useClickOutside";
 import { useGenericContext } from "@/app/lib/hooks/useGenericContext";
@@ -46,9 +46,10 @@ const Select = ({ children, value, onValueChange }: SelectProps) => {
 
 interface SelectTriggerProps {
   placeholder?: string;
+  disabled?: boolean;
 }
 
-const SelectTrigger: FC<SelectTriggerProps> = ({ placeholder }) => {
+const SelectTrigger: FC<SelectTriggerProps> = ({ placeholder, disabled }) => {
   const { isOpen, setIsOpen, value } = useGenericContext(SelectContext);
 
   return (
@@ -56,6 +57,7 @@ const SelectTrigger: FC<SelectTriggerProps> = ({ placeholder }) => {
       onMouseDown={(e) => e.preventDefault()}
       onClick={() => setIsOpen(!isOpen)}
       variant="outline"
+      disabled={disabled}
       className={cn(
         "w-full bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground",
         value && "text-foreground",
@@ -77,7 +79,7 @@ const SelectContent: FC<SelectContentProps> = ({ children }) => {
   return (
     <div
       className={cn(
-        "absolute top-11 z-50 flex flex-col overflow-hidden rounded-md border border-border bg-background shadow-md focus:outline-none",
+        "absolute top-11 z-50 flex max-h-80 flex-col overflow-hidden overflow-y-auto rounded-md border border-border bg-background shadow-md focus:outline-none",
         !isOpen && "hidden",
       )}
       style={{ width: `${width}px` }}

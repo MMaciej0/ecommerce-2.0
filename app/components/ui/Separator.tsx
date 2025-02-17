@@ -1,4 +1,4 @@
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/app/lib/utils/utils";
 import { HTMLAttributes } from "react";
 
 const Separator = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {

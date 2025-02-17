@@ -11,7 +11,6 @@ export interface DBProduct extends Document {
   tags: string[];
   avgRating: number;
   numReviews: number;
-  reviews: Types.ObjectId[];
   numSales: number;
   price: number;
   createdAt: Date;
@@ -33,11 +32,14 @@ const productSchema = new Schema<DBProduct>(
     tags: { type: [String], default: ["new"] },
     avgRating: { type: Number, required: true, default: 0 },
     numReviews: { type: Number, required: true, default: 0 },
-    reviews: [{ type: Schema.Types.ObjectId, ref: "Review", default: [] }],
     numSales: { type: Number, required: true, default: 0 },
     price: { type: Number, required: true },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
 );
 
 productSchema.index(
@@ -48,7 +50,7 @@ productSchema.index(
       tags: 5,
       description: 2,
     },
-  }
+  },
 );
 productSchema.index({ category: 1 });
 

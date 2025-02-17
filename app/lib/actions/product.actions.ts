@@ -1,15 +1,12 @@
 "use server";
 
-import { connectToDB } from "../db";
-import Product, { DBProduct } from "../db/models/product.model";
-import Category, { DBCategory } from "../db/models/category.model";
 import mongoose from "mongoose";
-import { toDecimalUnit } from "../utils";
-import { ProductImport } from "../validators/product";
 
-interface ProductWithCategory extends Omit<DBProduct, "category"> {
-  category: Omit<DBCategory, "products" | "createdAt" | "updatedAt">;
-}
+import { connectToDB } from "../db";
+import Product from "../db/models/product.model";
+import Category from "../db/models/category.model";
+import { ProductImport } from "../validators/product";
+import { serializeMongoData } from "../utils/utils";
 
 export interface GetProductsProps {
   search?: string;
@@ -40,8 +37,8 @@ export const getProducts = async ({
 
   let query = Product.find(queryParams)
     .populate("category", "name")
-    .select("-__v")
-    .lean();
+    .lean()
+    .select("-__v");
 
   if (search) {
     query = query.select({ score: { $meta: "textScore" } });
@@ -59,19 +56,9 @@ export const getProducts = async ({
     query = query.sort({ createdAt: -1 });
   }
 
-  const products = (await query
-    .lean()
-    .exec()) as unknown as ProductWithCategory[];
+  const products = await query.exec();
 
-  const transformedProducts = products.map((p) => ({
-    ...p,
-    _id: p._id.toString(),
-    price: toDecimalUnit(p.price),
-    category: { _id: p.category._id.toString(), name: p.category.name },
-    reviews: p.reviews.map((r) => r.toString()),
-  }));
-
-  return transformedProducts;
+  return serializeMongoData(products) as unknown as ProductImport[];
 };
 
 export const getProduct = async (
@@ -79,25 +66,27 @@ export const getProduct = async (
 ): Promise<ProductImport | null> => {
   await connectToDB();
 
-  const product = (await Product.findOne({ slug })
+  const product = await Product.findOne({ slug })
     .populate("category", "name")
     .select("-__v")
-    .lean()) as unknown as ProductWithCategory;
+    .lean();
 
   if (!product) {
     return null;
   }
 
-  const transformedProduct = {
-    ...product,
-    _id: product._id.toString(),
-    price: toDecimalUnit(product.price),
-    category: {
-      _id: product.category._id.toString(),
-      name: product.category.name,
-    },
-    reviews: product.reviews.map((r) => r.toString()),
-  };
+  return serializeMongoData(product) as unknown as ProductImport;
+};
 
-  return transformedProduct;
+export const getManyProducts = async (
+  ids: string[],
+): Promise<ProductImport[]> => {
+  await connectToDB();
+
+  const products = await Product.find({ _id: { $in: ids } })
+    .populate("category", "name")
+    .select("-__v")
+    .lean();
+
+  return serializeMongoData(products) as unknown as ProductImport[];
 };

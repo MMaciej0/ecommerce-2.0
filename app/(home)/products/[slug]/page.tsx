@@ -3,8 +3,9 @@ import AddToCartPanel from "@/app/components/pages/product/AddToCartPanel";
 import DefaultBreadCrumbs from "@/app/components/shared/defaultBreadcrumbs/DefaultBreadCrumbs";
 import BorderedHeading from "@/app/components/shared/headings/BorderedHeading";
 import { Card } from "@/app/components/ui/Card";
+
+import { getCart } from "@/app/lib/actions/cart.actions";
 import { getProduct } from "@/app/lib/actions/product.actions";
-import React from "react";
 
 const ProductPage = async ({
   params,
@@ -12,7 +13,7 @@ const ProductPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  const [product, cart] = await Promise.all([getProduct(slug), getCart()]);
 
   if (!product) throw new Error("Product not found.");
 
@@ -22,7 +23,7 @@ const ProductPage = async ({
       <div className="flex flex-col space-y-4 pt-10">
         <BorderedHeading>{product.name}</BorderedHeading>
         <div className="flex flex-col space-y-4 md:flex-row md:space-x-12 md:space-y-0">
-          <Card className="w-full">
+          <Card className="h-max w-full">
             <Card.Content className="space-y-3">
               <h4 className="text-sm font-semibold text-muted-foreground">
                 Description:
@@ -32,7 +33,7 @@ const ProductPage = async ({
           </Card>
           <Card className="h-max w-full md:max-w-96">
             <Card.Content>
-              <AddToCartPanel product={product} />
+              <AddToCartPanel product={product} cart={cart} />
             </Card.Content>
           </Card>
         </div>

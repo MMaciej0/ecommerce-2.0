@@ -4,7 +4,7 @@ import { startTransition, type FC } from "react";
 import { Card } from "./ui/Card";
 import { useRouter } from "next/navigation";
 import { Button, buttonVariants } from "./ui/Button";
-import { cn } from "../lib/utils";
+import { cn } from "../lib/utils/utils";
 import Link from "next/link";
 
 interface DefaultErrorProps {

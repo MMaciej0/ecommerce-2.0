@@ -12,7 +12,6 @@ export const productsToSeed: ProductInput[] = [
     tags: ["surprise", "gift", "mystery"],
     avgRating: 4.7,
     numReviews: 120,
-    reviews: [],
     numSales: 200,
     price: 2999, // Price stored as integer (in cents, so $29.99)
   },
@@ -27,7 +26,6 @@ export const productsToSeed: ProductInput[] = [
     tags: ["chocolate", "gourmet", "sweet", "mystery"],
     avgRating: 2.9,
     numReviews: 85,
-    reviews: [],
     numSales: 150,
     price: 4999, // Price stored as integer (in cents, so $49.99)
   },
@@ -42,7 +40,6 @@ export const productsToSeed: ProductInput[] = [
     tags: ["jewelry", "gift", "mystery", "luxury"],
     avgRating: 3.5,
     numReviews: 60,
-    reviews: [],
     numSales: 120,
     price: 7999, // Price stored as integer (in cents, so $79.99)
   },
@@ -57,7 +54,6 @@ export const productsToSeed: ProductInput[] = [
     tags: ["outdoor", "adventure", "mystery"],
     avgRating: 4.6,
     numReviews: 70,
-    reviews: [],
     numSales: 90,
     price: 5999, // Price stored as integer (in cents, so $59.99)
   },
@@ -72,7 +68,6 @@ export const productsToSeed: ProductInput[] = [
     tags: ["tech", "gadgets", "mystery"],
     avgRating: 1.0,
     numReviews: 150,
-    reviews: [],
     numSales: 250,
     price: 9999, // Price stored as integer (in cents, so $99.99)
   },
@@ -87,7 +82,6 @@ export const productsToSeed: ProductInput[] = [
     tags: ["spa", "wellness", "luxury", "mystery"],
     avgRating: 1.7,
     numReviews: 55,
-    reviews: [],
     numSales: 110,
     price: 6999, // Price stored as integer (in cents, so $69.99)
   },
@@ -102,7 +96,6 @@ export const productsToSeed: ProductInput[] = [
     tags: ["kids", "toys", "mystery"],
     avgRating: 3.4,
     numReviews: 110,
-    reviews: [],
     numSales: 180,
     price: 2499, // Price stored as integer (in cents, so $24.99)
   },
@@ -117,7 +110,6 @@ export const productsToSeed: ProductInput[] = [
     tags: ["candles", "luxury", "home", "mystery"],
     avgRating: 4.6,
     numReviews: 95,
-    reviews: [],
     numSales: 140,
     price: 3999, // Price stored as integer (in cents, so $39.99)
   },
@@ -132,7 +124,6 @@ export const productsToSeed: ProductInput[] = [
     tags: ["vintage", "collectibles", "mystery"],
     avgRating: 4.4,
     numReviews: 50,
-    reviews: [],
     numSales: 80,
     price: 14999, // Price stored as integer (in cents, so $149.99)
   },
@@ -147,7 +138,6 @@ export const productsToSeed: ProductInput[] = [
     tags: ["personalized", "custom", "gift", "mystery"],
     avgRating: 5.0,
     numReviews: 120,
-    reviews: [],
     numSales: 210,
     price: 7999, // Price stored as integer (in cents, so $79.99)
   },

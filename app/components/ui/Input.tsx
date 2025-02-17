@@ -1,4 +1,4 @@
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/app/lib/utils/utils";
 import React, { InputHTMLAttributes, ReactNode } from "react";
 
 interface InputProps extends InputHTMLAttributes<Omit<HTMLInputElement, "id">> {
@@ -10,9 +10,9 @@ const Input = ({ className, icon, ...props }: InputProps) => {
     <div className="relative">
       <input
         className={cn(
-          "peer w-full border border-border text-foreground/80 font-medium p-2 rounded-md focus-visible:outline-primary",
+          "peer w-full rounded-md border border-border p-2 font-medium text-foreground/80 focus-visible:outline-accent",
           icon && "pl-10",
-          className
+          className,
         )}
         id="input"
         {...props}
