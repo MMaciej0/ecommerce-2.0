@@ -24,7 +24,7 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, className }: ProductCardProps) => {
   return (
-    <Card className="flex h-full flex-col">
+    <Card className="flex h-full flex-col justify-between">
       <Card.Header className="border-b">{product.name}</Card.Header>
       <Card.Content className={className}>
         <ul className="space-y-2 text-lg">

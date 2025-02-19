@@ -10,9 +10,8 @@ const Hero = ({}) => {
       <div className="flex flex-col justify-center space-y-8 text-center md:text-left lg:py-4">
         <h1 className="text-4xl font-extrabold md:text-5xl">Beauty Gifts</h1>
         <p className="text-lg leading-tight text-muted-foreground xl:pb-8">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laborum
-          ullam aliquid soluta!
+          Discover the perfect beauty gifts to make every moment special. Give
+          the gift of beauty and make them glow inside and out.
         </p>
         <Link
           href="/products"

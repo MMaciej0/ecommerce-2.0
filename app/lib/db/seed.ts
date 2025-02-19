@@ -5,6 +5,8 @@ import Product from "./models/product.model";
 import { productsToSeed } from "./data";
 import Category from "./models/category.model";
 import { Types } from "mongoose";
+import Cart from "./models/cart.model";
+import CartItem from "./models/cartItem.model";
 
 loadEnvConfig(cwd());
 
@@ -13,25 +15,23 @@ const seed = async () => {
     await connectToDB();
     await Product.deleteMany();
     await Category.deleteMany();
+    await Cart.deleteMany();
+    await CartItem.deleteMany();
 
-    const categories = await Category.insertMany([
-      { name: "Mystery Gifts" },
-      { name: "Edible Gifts" },
-      { name: "Jewelry" },
-      { name: "Outdoor" },
-      { name: "Tech Gifts" },
-      { name: "Beauty & Wellness" },
-      { name: "Toys & Games" },
-      { name: "Home Decor" },
-      { name: "Collectibles" },
-      { name: "Custom Gifts" },
-    ]);
+    const categoriesSet = new Set<string>(
+      productsToSeed.map((p) => p.category),
+    );
+    const categoriesWithName = Array.from(categoriesSet).map((name) => ({
+      name,
+    }));
+
+    const categories = await Category.insertMany(categoriesWithName);
 
     console.log(`Seeded ${categories.length} categories.`);
 
     const categoryMap = new Map<string, Types.ObjectId>();
     categories.forEach((category) =>
-      categoryMap.set(category.name, category._id)
+      categoryMap.set(category.name, category._id),
     );
 
     const updatedProducts = productsToSeed.map((product) => {
@@ -50,7 +50,7 @@ const seed = async () => {
     for (const product of products) {
       await Category.updateOne(
         { _id: product.category },
-        { $push: { products: product._id } }
+        { $push: { products: product._id } },
       );
     }
 

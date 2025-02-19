@@ -12,19 +12,21 @@ interface ProductsWithGlowProps {
 
 const ProductsWithGlow: FC<ProductsWithGlowProps> = ({ products }) => {
   return (
-    <GlowArea className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-3">
+    <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-3">
       {products.map((product) => (
         <Link
           href={`/products/${product.slug}`}
           className="rounded-lg"
           key={product._id}
         >
-          <Glow className="rounded-md">
-            <ProductCard product={product} />
-          </Glow>
+          <GlowArea className="h-full shadow-lg">
+            <Glow className="h-full rounded-md">
+              <ProductCard product={product} />
+            </Glow>
+          </GlowArea>
         </Link>
       ))}
-    </GlowArea>
+    </div>
   );
 };
 
