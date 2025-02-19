@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, ReactNode } from "react";
 import { cn } from "@/app/lib/utils/utils";
 
 export const Card = ({
@@ -7,7 +7,10 @@ export const Card = ({
 }: HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
-      className={cn("rounded-md border border-border shadow-md", className)}
+      className={cn(
+        "relative rounded-md border border-border shadow-md",
+        className,
+      )}
       {...props}
     />
   );
@@ -36,6 +39,33 @@ const CardFooter = ({
   return <div className={cn("p-4", className)} {...props} />;
 };
 
+interface CardDialogProps {
+  isOpen: boolean;
+  children: ReactNode;
+}
+
+const CardDialog = ({ isOpen, children }: CardDialogProps) => {
+  return (
+    <>
+      <div
+        className={cn(
+          "absolute inset-0 max-h-0 overflow-hidden rounded-[inherit] opacity-0 backdrop-blur-md transition-all duration-300 ease-in-out",
+          isOpen && "max-h-full opacity-100",
+        )}
+      />
+      <div
+        className={cn(
+          "absolute inset-5 flex max-h-0 flex-col justify-center overflow-hidden rounded-[inherit] opacity-0 transition-all duration-300 ease-in-out",
+          isOpen && "max-h-full opacity-100",
+        )}
+      >
+        {children}
+      </div>
+    </>
+  );
+};
+
 Card.Header = CardHeader;
 Card.Content = CardContent;
 Card.Footer = CardFooter;
+Card.Dialog = CardDialog;

@@ -9,6 +9,7 @@ import { PopulatedCart } from "../validators/cart";
 import CartItem from "../db/models/cartItem.model";
 import { ServerActionResponse } from "../validators/base";
 import { revalidatePath } from "next/cache";
+import mongoose from "mongoose";
 
 export const getCart = async (): Promise<PopulatedCart | null> => {
   await connectToDB();
@@ -46,7 +47,12 @@ export const createCart = async (): Promise<PopulatedCart> => {
   ) as unknown as PopulatedCart;
 
   const cookieStore = await cookies();
-  cookieStore.set("cartId", serializedCart._id);
+  cookieStore.set("cartId", serializedCart._id, {
+    maxAge: 60 * 60 * 24 * 30,
+    secure: true,
+    httpOnly: true,
+    sameSite: "lax",
+  });
 
   return serializedCart;
 };
@@ -55,6 +61,7 @@ export const addToCart = async (
   productId: string,
   quantity: number,
   price: number,
+  replace: boolean = false,
 ): Promise<ServerActionResponse> => {
   try {
     await connectToDB();
@@ -71,7 +78,7 @@ export const addToCart = async (
           _id: existingCartItem._id,
         },
         {
-          quantity: existingCartItem.quantity + quantity,
+          quantity: replace ? quantity : existingCartItem.quantity + quantity,
         },
       );
     } else {
@@ -94,6 +101,43 @@ export const addToCart = async (
     return {
       success: false,
       message: "Unable to add your product to cart. Please try again.",
+    };
+  }
+};
+
+export const removeFromCart = async (
+  cartItemId: string,
+): Promise<ServerActionResponse> => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    await connectToDB();
+
+    const cart = (await getCart()) || (await createCart());
+
+    await CartItem.deleteOne({ _id: cartItemId }).session(session);
+
+    await Cart.findByIdAndUpdate(
+      cart._id,
+      { $pull: { cartItems: cartItemId } },
+      { session },
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+
+    revalidatePath("/");
+
+    return { success: true, message: "Product removed from cart." };
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+
+    console.error(error);
+    return {
+      success: false,
+      message: "Unable to remove your product from cart. Please try again.",
     };
   }
 };

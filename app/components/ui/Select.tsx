@@ -1,13 +1,5 @@
 "use client";
 
-interface SelectContextProps {
-  isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
-  value?: string;
-  onValueChange: (value: string) => void;
-  width?: number;
-}
-
 import { createContext, FC, ReactNode, useRef, useState } from "react";
 import { Button } from "./Button";
 import { ChevronDown } from "lucide-react";
@@ -15,6 +7,16 @@ import { cn } from "@/app/lib/utils/utils";
 import { useResize } from "@/app/lib/hooks/useResize";
 import { useClickOutside } from "@/app/lib/hooks/useClickOutside";
 import { useGenericContext } from "@/app/lib/hooks/useGenericContext";
+
+interface SelectContextProps {
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+  value?: string;
+  onValueChange: (value: string) => void;
+  width?: number;
+  position: "top" | "bottom";
+  setPosition: (position: "top" | "bottom") => void;
+}
 
 const SelectContext = createContext<SelectContextProps | undefined>(undefined);
 
@@ -27,6 +29,7 @@ interface SelectProps {
 const Select = ({ children, value, onValueChange }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [width, setWidth] = useState(0);
+  const [position, setPosition] = useState<"top" | "bottom">("bottom");
   const containerRef = useRef<HTMLDivElement>(null);
 
   useResize(containerRef, setWidth);
@@ -35,7 +38,15 @@ const Select = ({ children, value, onValueChange }: SelectProps) => {
 
   return (
     <SelectContext.Provider
-      value={{ isOpen, setIsOpen, value, onValueChange, width }}
+      value={{
+        isOpen,
+        setIsOpen,
+        value,
+        onValueChange,
+        width,
+        position,
+        setPosition,
+      }}
     >
       <div className="relative w-full" ref={containerRef}>
         {children}
@@ -50,12 +61,42 @@ interface SelectTriggerProps {
 }
 
 const SelectTrigger: FC<SelectTriggerProps> = ({ placeholder, disabled }) => {
-  const { isOpen, setIsOpen, value } = useGenericContext(SelectContext);
+  const { isOpen, setIsOpen, value, position, setPosition } =
+    useGenericContext(SelectContext);
+
+  const btnRef = useRef<HTMLButtonElement>(null);
+
+  const handleOpen = () => {
+    if (disabled) return;
+
+    if (btnRef.current) {
+      const windowHeight = window.innerHeight;
+      const maxContentHeight = 320;
+
+      const { bottom, top } = btnRef.current.getBoundingClientRect();
+
+      if (bottom + maxContentHeight > windowHeight) {
+        if (position === "bottom") {
+          setPosition("top");
+        }
+      }
+
+      if (top - maxContentHeight < 0) {
+        if (position === "top") {
+          setPosition("bottom");
+        }
+      }
+    }
+
+    setIsOpen(!isOpen);
+  };
 
   return (
     <Button
+      size="sm"
+      ref={btnRef}
       onMouseDown={(e) => e.preventDefault()}
-      onClick={() => setIsOpen(!isOpen)}
+      onClick={handleOpen}
       variant="outline"
       disabled={disabled}
       className={cn(
@@ -74,12 +115,13 @@ interface SelectContentProps {
 }
 
 const SelectContent: FC<SelectContentProps> = ({ children }) => {
-  const { isOpen, width } = useGenericContext(SelectContext);
+  const { isOpen, width, position } = useGenericContext(SelectContext);
 
   return (
     <div
       className={cn(
-        "absolute top-11 z-50 flex max-h-80 flex-col overflow-hidden overflow-y-auto rounded-md border border-border bg-background shadow-md focus:outline-none",
+        "absolute z-50 flex max-h-80 flex-col overflow-hidden overflow-y-auto rounded-md border border-border bg-background shadow-md focus:outline-none",
+        position === "bottom" ? "top-11" : "bottom-11",
         !isOpen && "hidden",
       )}
       style={{ width: `${width}px` }}

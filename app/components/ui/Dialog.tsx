@@ -97,7 +97,7 @@ export const DialogContent: FC<DialogContentProps> = ({
   return (
     <>
       {open && (
-        <div className="fixed inset-0 bg-secondary/70">
+        <div className="fixed inset-0 bg-foreground/70">
           <div
             ref={dialogContentRef}
             className={cn(
