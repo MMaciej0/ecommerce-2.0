@@ -1,12 +1,12 @@
 import { NextRequest } from "next/server";
-import { getProducts } from "@/app/lib/actions/product.actions";
+import { getPaginatedProducts } from "@/app/lib/actions/product.actions";
 import { globalSearchSchema } from "@/app/lib/validators/searchParams";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const search = Object.fromEntries(searchParams.entries());
+  const parsedSearch = Object.fromEntries(searchParams.entries());
 
-  const validatedSearch = globalSearchSchema.safeParse(search);
+  const validatedSearch = globalSearchSchema.safeParse(parsedSearch);
 
   if (!validatedSearch.success) {
     return new Response(
@@ -20,27 +20,14 @@ export async function GET(request: NextRequest) {
       {
         status: 400,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   }
 
-  try {
-    const products = await getProducts({ search: validatedSearch.data.search });
+  const { search, limit, page } = validatedSearch.data;
 
-    if (!products || products.length === 0) {
-      return new Response(
-        JSON.stringify({
-          error: {
-            message: "No products found",
-            code: "NOT_FOUND",
-          },
-        }),
-        {
-          status: 404,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-    }
+  try {
+    const products = await getPaginatedProducts({ search, limit, page });
 
     return new Response(JSON.stringify(products), {
       status: 200,
@@ -59,7 +46,7 @@ export async function GET(request: NextRequest) {
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   }
 }

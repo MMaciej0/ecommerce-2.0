@@ -43,12 +43,11 @@ const productSchema = new Schema<DBProduct>(
 );
 
 productSchema.index(
-  { name: "text", description: "text", tags: "text" },
+  { name: "text", tags: "text" },
   {
     weights: {
       name: 10,
       tags: 5,
-      description: 2,
     },
   },
 );

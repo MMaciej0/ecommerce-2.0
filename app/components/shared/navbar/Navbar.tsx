@@ -1,7 +1,7 @@
 import { getCart } from "@/app/lib/actions/cart.actions";
 import Logo from "../../Logo";
 import NavbarBasket from "./navbarBasket/NavbarBasket";
-import NavbarSearch from "./NavbarSearch";
+import NavbarSearch from "./navbarSearch/NavbarSearch";
 
 const Navbar = async () => {
   const cart = await getCart();

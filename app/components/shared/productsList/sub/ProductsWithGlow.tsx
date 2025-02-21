@@ -2,9 +2,9 @@
 
 import { ProductImport } from "@/app/lib/validators/product";
 import { type FC } from "react";
-import { GlowArea, Glow } from "../../Glow";
+import { GlowArea, Glow } from "../../../Glow";
 import Link from "next/link";
-import { ProductCard } from "./ProductsList";
+import { ProductCard } from "./ProductCard";
 
 interface ProductsWithGlowProps {
   products: ProductImport[];

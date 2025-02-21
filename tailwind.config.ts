@@ -24,16 +24,6 @@ export default {
         "destructive-foreground": "hsl(var(--destructive-foreground))",
         border: "hsl(var(--border))",
       },
-      animation: {
-        "pulse-glow": "pulse-glow 3s infinite",
-      },
-      keyframes: {
-        "pulse-glow": {
-          "0%": { opacity: "0.2" },
-          "50%": { opacity: "1" },
-          "100%": { opacity: "0.2" },
-        },
-      },
     },
   },
   plugins: [hideScrollbar],

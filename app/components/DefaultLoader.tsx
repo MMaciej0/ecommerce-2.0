@@ -7,8 +7,8 @@ interface DefaultLoaderProps {
 
 const DefaultLoader: FC<DefaultLoaderProps> = ({ size }) => {
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <LoaderCircle size={size} className="animate-spin flex-shrink-0" />
+    <div className="flex h-full w-full items-center justify-center">
+      <LoaderCircle size={size} className="flex-shrink-0 animate-spin" />
     </div>
   );
 };

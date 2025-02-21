@@ -78,7 +78,7 @@ body {
     hsl(var(--accent))
   );
   z-index: -1;
-  animation: spin 4s linear infinite;
+  animation: rotate 4s linear infinite;
 }
 
 .disco::before {
@@ -95,7 +95,7 @@ body {
   );
 }
 
-@keyframes spin {
+@keyframes rotate {
   from {
     --angle: 0deg;
   }

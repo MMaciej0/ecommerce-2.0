@@ -1,5 +1,5 @@
 import z from "zod";
-import { DBBaseSchema, RequiredString } from "./base";
+import { DBBaseSchema, PaginatedMetadataSchema, RequiredString } from "./base";
 import { toSmallestUnit } from "../utils/utils";
 
 export const ProductSchema = z.object({
@@ -43,3 +43,10 @@ export const ProductImportSchema = ProductSchema.extend({
 });
 
 export type ProductImport = z.infer<typeof ProductImportSchema>;
+
+export const PaginatedProductsSchema = z.object({
+  products: z.array(ProductImportSchema),
+  metadata: PaginatedMetadataSchema,
+});
+
+export type PaginatedProducts = z.infer<typeof PaginatedProductsSchema>;

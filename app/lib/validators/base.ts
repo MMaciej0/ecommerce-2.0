@@ -14,3 +14,12 @@ export const ServerActionResponseSchema = z.object({
 });
 
 export type ServerActionResponse = z.infer<typeof ServerActionResponseSchema>;
+
+export const PaginatedMetadataSchema = z.object({
+  hasMore: z.boolean(),
+  total: z.number().int(),
+  currentPage: z.number().int(),
+  totalPages: z.number().int(),
+});
+
+export type PaginatedMetadata = z.infer<typeof PaginatedMetadataSchema>;
