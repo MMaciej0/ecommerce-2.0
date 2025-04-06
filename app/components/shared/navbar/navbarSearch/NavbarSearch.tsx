@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "../../../ui/Dialog";
 import { Search } from "lucide-react";
 import NavbarSearchList from "./sub/NavbarSearchList";
@@ -9,6 +9,13 @@ import NavbarSearchInput from "./sub/NavbarSearchInput";
 
 const NavbarSearch: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      searchInputRef.current?.focus();
+    }
+  }, [isOpen]);
 
   return (
     <Dialog open={isOpen} setOpen={setIsOpen}>
@@ -19,7 +26,7 @@ const NavbarSearch: FC = () => {
         <div className="flex h-full w-full flex-col">
           <Dialog.Header>Search Gifts</Dialog.Header>
           <SearchContentProvider>
-            <NavbarSearchInput />
+            <NavbarSearchInput ref={searchInputRef} />
             <NavbarSearchList setOpen={setIsOpen} />
           </SearchContentProvider>
         </div>
