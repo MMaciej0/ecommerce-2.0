@@ -1,11 +1,12 @@
 import { cn } from "@/app/lib/utils/utils";
-import React, { InputHTMLAttributes, ReactNode } from "react";
+import React, { InputHTMLAttributes, ReactNode, RefObject } from "react";
 
 interface InputProps extends InputHTMLAttributes<Omit<HTMLInputElement, "id">> {
   icon?: ReactNode;
+  ref?: RefObject<HTMLInputElement | null>;
 }
 
-const Input = ({ className, icon, ...props }: InputProps) => {
+const Input = ({ className, icon, ref, ...props }: InputProps) => {
   return (
     <div className="relative">
       <input
@@ -15,6 +16,7 @@ const Input = ({ className, icon, ...props }: InputProps) => {
           className,
         )}
         id="input"
+        ref={ref}
         {...props}
       />
       {icon && (

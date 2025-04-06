@@ -13,8 +13,14 @@ interface NavbarSearchListProps {
 }
 
 const NavbarSearchList: FC<NavbarSearchListProps> = ({ setOpen }) => {
-  const { isError, result, searchTerm, isPending, fetchProducts } =
-    useGenericContext(SearchContentContext);
+  const {
+    isError,
+    result,
+    searchTerm,
+    isPending,
+    fetchProducts,
+    isDebouncing,
+  } = useGenericContext(SearchContentContext);
 
   const router = useRouter();
   const loaderRef = useRef<HTMLDivElement>(null);
@@ -59,10 +65,13 @@ const NavbarSearchList: FC<NavbarSearchListProps> = ({ setOpen }) => {
       </div>
     );
 
-  if (!result || !result?.products.length)
-    return <div className="py-8 text-center text-lg">No products found</div>;
-
   if (isError) return <div className="py-8 text-center text-lg">{isError}</div>;
+
+  if (!result && (isPending || isDebouncing))
+    return <DefaultLoader size={36} className="py-8" />;
+
+  if (!result || !result.products.length)
+    return <div className="py-8 text-center text-lg">No products found</div>;
 
   const handleClick = (slug: string) => {
     setOpen(false);
@@ -83,9 +92,7 @@ const NavbarSearchList: FC<NavbarSearchListProps> = ({ setOpen }) => {
         ))}
       </ul>
       {isPending && result.metadata.hasMore && (
-        <div className="py-8">
-          <DefaultLoader size={36} />
-        </div>
+        <DefaultLoader size={36} className="py-8" />
       )}
       <div className="h-10 w-full" ref={loaderRef} />
     </div>

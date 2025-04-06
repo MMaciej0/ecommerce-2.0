@@ -17,6 +17,8 @@ interface SearchContextType {
   result: PaginatedProducts | null;
   isPending: boolean;
   isError: string | null;
+  isDebouncing: boolean;
+  setIsDebouncing: (isDebouncing: boolean) => void;
   setIsError: (error: string | null) => void;
   setSearchTerm: (term: string) => void;
   fetchProducts: (params: SearchProductsProps) => Promise<void>;
@@ -35,6 +37,7 @@ export const SearchContentProvider = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [result, setResult] = useState<PaginatedProducts | null>(null);
   const [isError, setIsError] = useState<string | null>(null);
+  const [isDebouncing, setIsDebouncing] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const fetchProducts = async ({
@@ -106,6 +109,8 @@ export const SearchContentProvider = ({
         isError,
         setIsError,
         fetchProducts,
+        isDebouncing,
+        setIsDebouncing,
       }}
     >
       {children}

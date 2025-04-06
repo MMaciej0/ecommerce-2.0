@@ -8,6 +8,7 @@ import React, {
   ButtonHTMLAttributes,
   useRef,
   useEffect,
+  useCallback,
 } from "react";
 import { Button, buttonVariants } from "./Button";
 import { VariantProps } from "class-variance-authority";
@@ -80,6 +81,15 @@ export const DialogContent: FC<DialogContentProps> = ({
   const { open, setOpen } = useGenericContext(DialogContext);
   const dialogContentRef = useRef<HTMLDivElement>(null);
 
+  const handleKayboardClose = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+      }
+    },
+    [setOpen],
+  );
+
   useEffect(() => {
     if (open) {
       document.body.classList.add("disable-scroll");
@@ -87,10 +97,13 @@ export const DialogContent: FC<DialogContentProps> = ({
       document.body.classList.remove("disable-scroll");
     }
 
+    window.addEventListener("keydown", handleKayboardClose);
+
     return () => {
       document.body.classList.remove("disable-scroll");
+      window.removeEventListener("keydown", handleKayboardClose);
     };
-  }, [open]);
+  }, [open, handleKayboardClose]);
 
   useClickOutside(dialogContentRef, () => setOpen(false));
 
